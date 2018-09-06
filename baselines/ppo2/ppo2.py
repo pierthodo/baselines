@@ -91,10 +91,12 @@ class Model(object):
 
 class Runner(AbstractEnvRunner):
 
-    def __init__(self, *, env, model, nsteps, gamma, lam):
+    def __init__(self, *, env, model, nsteps, gamma, lam,beta,theta):
         super().__init__(env=env, model=model, nsteps=nsteps)
         self.lam = lam
         self.gamma = gamma
+        self.beta = beta
+        self.theta = theta
 
     def run(self):
         mb_obs, mb_rewards, mb_actions, mb_values, mb_dones, mb_neglogpacs = [],[],[],[],[],[]
@@ -124,13 +126,46 @@ class Runner(AbstractEnvRunner):
         mb_returns = np.zeros_like(mb_rewards)
         mb_advs = np.zeros_like(mb_rewards)
         lastgaelam = 0
+
+        """
+        prev = np.zeros(T,'float32')
+        td_err = np.zeros(T,'float32')
+        for t in range(T):
+            nonterminal = 1-new[t+1]
+            if t == 0:
+                td_err[t] =  gamma* vpred[t+1]*nonterminal - vpred[t]
+                prev[t] = vpred[t]
+            else:
+                td_err[t] = gamma*nonterminal*(theta*prev[t-1] +(1-theta)*vpred[t+1]) - vpred[t]
+                prev[t] = (theta)*prev[t-1] + (1-theta)*vpred[t]
+                #prev[t] = vpred[t]
+                  
+        for t in reversed(range(T)):
+            delta = rew[t] + td_err[t]
+            gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
+        seg["tdlamret"] = seg["adv"] + seg["vpred"]
+        """
+        #### START THE ADDED PART FOR REGULARISATION
+        prev = np.zeros(T,'float32')
+        reg_val = np.zeros(T,'float32')
+
+        for t in range(T):
+            if t == 0:
+                reg_val[t] =  mb_values[t]
+                prev[t] = mb_values[t]
+            else:
+                td_err[t] = self.beta*prev[t-1] +(1-self.beta)*mb_values[t]
+                prev[t] = (self.theta)*prev[t-1] + (1-self.theta)*mb_values[t]
+                #prev[t] = vpred[t]
+        ### END OF REG CALC
         for t in reversed(range(self.nsteps)):
             if t == self.nsteps - 1:
                 nextnonterminal = 1.0 - self.dones
                 nextvalues = last_values
             else:
                 nextnonterminal = 1.0 - mb_dones[t+1]
-                nextvalues = mb_values[t+1]
+                nextvalues = reg_val[t+1] ## USE THE REG VALUE INSTEAD OF mb_values[t+1]
+
             delta = mb_rewards[t] + self.gamma * nextvalues * nextnonterminal - mb_values[t]
             mb_advs[t] = lastgaelam = delta + self.gamma * self.lam * nextnonterminal * lastgaelam
         mb_returns = mb_advs + mb_values
@@ -152,7 +187,7 @@ def constfn(val):
 def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0, lr=3e-4,
             vf_coef=0.5,  max_grad_norm=0.5, gamma=0.99, lam=0.95,
             log_interval=10, nminibatches=4, noptepochs=4, cliprange=0.2,
-            save_interval=0, load_path=None, **network_kwargs):
+            save_interval=0, load_path=None,beta=0,theta=0, **network_kwargs):
     '''
     Learn policy using PPO algorithm (https://arxiv.org/abs/1707.06347)
     
@@ -230,7 +265,7 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     model = make_model()
     if load_path is not None:
         model.load(load_path)
-    runner = Runner(env=env, model=model, nsteps=nsteps, gamma=gamma, lam=lam)
+    runner = Runner(env=env, model=model, nsteps=nsteps, gamma=gamma, lam=lam,beta=beta,theta=theta)
 
     epinfobuf = deque(maxlen=100)
     tfirststart = time.time()
