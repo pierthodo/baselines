@@ -271,6 +271,8 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     tfirststart = time.time()
 
     nupdates = total_timesteps//nbatch
+    print("Number of updates is : ",nupdates)
+    ### Decay for reg theta /= 1+decay*iters_so_far
     for update in range(1, nupdates+1):
         assert nbatch % nminibatches == 0
         tstart = time.time()
