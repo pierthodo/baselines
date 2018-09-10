@@ -130,6 +130,7 @@ class Runner(AbstractEnvRunner):
         """
         prev = np.zeros(T,'float32')
         td_err = np.zeros(T,'float32')
+        print(np.mean(nb_rewards))
         for t in range(T):
             nonterminal = 1-new[t+1]
             if t == 0:
@@ -146,8 +147,7 @@ class Runner(AbstractEnvRunner):
         seg["tdlamret"] = seg["adv"] + seg["vpred"]
         """
         #### START THE ADDED PART FOR REGULARISATION
-        prev = np.zeros(self.nsteps,'float32')
-
+        prev = np.asarray(mb_values,dtype=np.float32)
         for t in range(self.nsteps):
             if t == 0:
                 prev[t] = mb_values[t]
@@ -276,6 +276,7 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     print("Number of updates is : ",nupdates)
     ### Decay for reg theta /= 1+decay*iters_so_far
     for update in range(1, nupdates+1):
+        print("Update number : ",update)
         assert nbatch % nminibatches == 0
         tstart = time.time()
         frac = 1.0 - (update - 1.0) / nupdates
