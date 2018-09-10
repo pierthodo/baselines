@@ -147,24 +147,26 @@ class Runner(AbstractEnvRunner):
         """
         #### START THE ADDED PART FOR REGULARISATION
         prev = np.zeros(self.nsteps,'float32')
-        reg_val = np.zeros(self.nsteps,'float32')
 
         for t in range(self.nsteps):
             if t == 0:
-                reg_val[t] =  mb_values[t]
                 prev[t] = mb_values[t]
             else:
-                td_err[t] = self.beta*prev[t-1] +(1-self.beta)*mb_values[t]
                 prev[t] = (self.theta)*prev[t-1] + (1-self.theta)*mb_values[t]
                 #prev[t] = vpred[t]
         ### END OF REG CALC
         for t in reversed(range(self.nsteps)):
             if t == self.nsteps - 1:
                 nextnonterminal = 1.0 - self.dones
-                nextvalues = last_values
+                nextvalues = (1-self.beta)*last_values+self.beta*prev[t-1]
+            
+            elif t == 0:
+                nextnonterminal = 1.0 - mb_dones[t+1]
+                nextvalues = (1-self.beta)*mb_values[t+1] + self.beta*prev[t] 
+
             else:
                 nextnonterminal = 1.0 - mb_dones[t+1]
-                nextvalues = reg_val[t+1] ## USE THE REG VALUE INSTEAD OF mb_values[t+1]
+                nextvalues = (1-self.beta)*mb_values[t+1] + self.beta*prev[t-1] # USE THE REG VALUE INSTEAD OF mb_values[t+1]
 
             delta = mb_rewards[t] + self.gamma * nextvalues * nextnonterminal - mb_values[t]
             mb_advs[t] = lastgaelam = delta + self.gamma * self.lam * nextnonterminal * lastgaelam
