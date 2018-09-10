@@ -105,7 +105,9 @@ def common_arg_parser():
     parser.add_argument('--beta', type=float, default=0)
     parser.add_argument('--decay', type=float, default=0),
     parser.add_argument('--theta', type=float, default=0),
+    parser.add_argument('--identifier', type=str, default=""),
     parser.add_argument('--play', default=False, action='store_true')
+    parser.add_argument('--lr', type=float, default=3e-4)
     return parser
 
 def robotics_arg_parser():

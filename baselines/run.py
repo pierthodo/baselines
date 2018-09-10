@@ -203,12 +203,15 @@ def main():
     arg_parser = common_arg_parser()
     args, unknown_args = arg_parser.parse_known_args()
     extra_args = {k: parse(v) for k, v in parse_unknown_args(unknown_args).items()}
+    
+
+    LOG_DIR = "/home/pthodo/project/pthodo/LOG_DIR/"+str(args.identifier)+ "lr_"+str(args.lr)+"_beta_" +str(args.beta)+"_theta_"+ str(args.theta) + "_decay_" + str(args.decay) + "/" + str(args.env) + "/" + str(args.seed) + "/"
 
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
-        logger.configure()
+        logger.configure(dir=LOG_DIR)
     else:
-        logger.configure(format_strs=[])
+        logger.configure(format_strs=[],dir=LOG_DIR)
         rank = MPI.COMM_WORLD.Get_rank()
 
     model, _ = train(args, extra_args)
