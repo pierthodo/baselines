@@ -146,10 +146,10 @@ class Runner(AbstractEnvRunner):
         seg["tdlamret"] = seg["adv"] + seg["vpred"]
         """
         #### START THE ADDED PART FOR REGULARISATION
-        prev = np.zeros(T,'float32')
-        reg_val = np.zeros(T,'float32')
+        prev = np.zeros(self.nsteps,'float32')
+        reg_val = np.zeros(self.nsteps,'float32')
 
-        for t in range(T):
+        for t in range(self.nsteps):
             if t == 0:
                 reg_val[t] =  mb_values[t]
                 prev[t] = mb_values[t]
