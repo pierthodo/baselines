@@ -244,7 +244,7 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     
 
     '''
-    
+
     set_global_seeds(seed)
 
     if isinstance(lr, float): lr = constfn(lr)
@@ -276,6 +276,8 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     print("Number of updates is : ",nupdates)
     ### Decay for reg theta /= 1+decay*iters_so_far
     for update in range(1, nupdates+1):
+        print(beta)
+        print(theta)
         print("Update number : ",update)
         assert nbatch % nminibatches == 0
         tstart = time.time()
