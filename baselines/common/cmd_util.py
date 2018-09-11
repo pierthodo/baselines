@@ -19,6 +19,7 @@ from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 from baselines.common.retro_wrappers import RewardScaler
 
 
+
 def make_vec_env(env_id, env_type, num_env, seed, wrapper_kwargs=None, start_index=0, reward_scale=1.0):
     """
     Create a wrapped, monitored SubprocVecEnv for Atari and MuJoCo.
@@ -107,6 +108,7 @@ def common_arg_parser():
     parser.add_argument('--theta', type=float, default=0),
     parser.add_argument('--identifier', type=str, default=""),
     parser.add_argument('--play', default=False, action='store_true')
+    parser.add_argument('--path',type=str,default="/home/pthodo/project/pthodo/LOG_DIR/")
     parser.add_argument('--lr', type=float, default=3e-4)
     return parser
 

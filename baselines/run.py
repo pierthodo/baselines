@@ -205,7 +205,7 @@ def main():
     extra_args = {k: parse(v) for k, v in parse_unknown_args(unknown_args).items()}
     
 
-    LOG_DIR = "/home/pthodo/project/pthodo/LOG_DIR/"+str(args.identifier)+ "lr_"+str(args.lr)+"_beta_" +str(args.beta)+"_theta_"+ str(args.theta) + "_decay_" + str(args.decay) + "/" + str(args.env) + "/" + str(args.seed) + "/"
+    LOG_DIR = args.path+str(args.identifier)+ "lr_"+str(args.lr)+"_beta_" +str(args.beta)+"_theta_"+ str(args.theta) + "_decay_" + str(args.decay) + "/" + str(args.env) + "/" + str(args.seed) + "/"
 
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
