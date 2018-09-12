@@ -276,7 +276,6 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     print("Number of updates is : ",nupdates)
     ### Decay for reg theta /= 1+decay*iters_so_far
     for update in range(1, nupdates+1):
-        runner.beta /= 1+decay*update
         print(beta)
         print(theta)
         print("Update number : ",update)
