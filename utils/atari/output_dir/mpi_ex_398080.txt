@@ -1,0 +1,56 @@
+[nia1247.scinet.local:234682] pml_ucx.c:224 Error: UCP worker does not support MPI_THREAD_MULTIPLE
+Logging to /tmp/openai-2018-09-12-09-48-56-320758
+--------------------------------------------------------------------------
+A process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.
+
+The process that invoked fork was:
+
+  Local host:          [[12555,1],0] (PID 234682)
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+Logging to /scratch/d/dprecup/pthodo/benchmark_2/beta_0_theta_0_decay_0/PongNoFrameskip-v4/10/
+2018-09-12 09:49:13.649382: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+slurmstepd: error: *** JOB 398080 ON nia1247 CANCELLED AT 2018-09-12T09:49:26 ***
+
+scontrol show jobid 398080
+JobId=398080 JobName=mpi_ex
+   UserId=pthodo(3039931) GroupId=dprecup(6002510) MCS_label=N/A
+   Priority=2352962 Nice=0 Account=def-dprecup QOS=normal
+   JobState=COMPLETING Reason=None Dependency=(null)
+   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:15
+   RunTime=00:00:54 TimeLimit=01:00:00 TimeMin=N/A
+   SubmitTime=2018-09-12T09:48:31 EligibleTime=2018-09-12T09:48:31
+   StartTime=2018-09-12T09:48:32 EndTime=2018-09-12T09:49:26 Deadline=N/A
+   PreemptTime=None SuspendTime=None SecsPreSuspend=0
+   LastSchedEval=2018-09-12T09:48:32
+   Partition=compute AllocNode:Sid=nia-login07:401421
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=nia1247
+   BatchHost=nia1247
+   NumNodes=1 NumCPUs=80 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=80,node=1,billing=40
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   Gres=(null) Reservation=(null)
+   OverSubscribe=NO Contiguous=0 Licenses=(null) Network=(null)
+   Command=/gpfs/fs0/scratch/d/dprecup/pthodo/utils/test.sh
+   WorkDir=/gpfs/fs0/scratch/d/dprecup/pthodo/utils
+   StdErr=/gpfs/fs0/scratch/d/dprecup/pthodo/utils/mpi_ex_398080.txt
+   StdIn=/dev/null
+   StdOut=/gpfs/fs0/scratch/d/dprecup/pthodo/utils/mpi_ex_398080.txt
+   Power=
+
+sacct -j 398080
+       JobID    JobName    Account    Elapsed  MaxVMSize     MaxRSS  SystemCPU    UserCPU ExitCode 
+------------ ---------- ---------- ---------- ---------- ---------- ---------- ---------- -------- 
+398080           mpi_ex def-dprec+   00:00:54                        00:05.208  00:04.660      0:0 
+398080.batch      batch def-dprec+   00:00:55   3826552K    312812K  00:05.208  00:04.660     0:15 

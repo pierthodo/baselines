@@ -1,0 +1,365 @@
+[nia0921.scinet.local:406170] pml_ucx.c:224 Error: UCP worker does not support MPI_THREAD_MULTIPLE
+Logging to /tmp/openai-2018-09-12-14-32-18-076502
+--------------------------------------------------------------------------
+A process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.
+
+The process that invoked fork was:
+
+  Local host:          [[54998,1],0] (PID 406170)
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+Logging to /scratch/d/dprecup/pthodo/LOG_DIR/benchmark_3/beta_0.3_theta_0.1_decay_0/PongNoFrameskip-v4/11/
+2018-09-12 14:32:26.186728: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+Training ppo2 on atari:PongNoFrameskip-v4 with arguments 
+{'nsteps': 128, 'nminibatches': 4, 'lam': 0.95, 'gamma': 0.99, 'noptepochs': 4, 'log_interval': 1, 'ent_coef': 0.01, 'beta': 0.3, 'theta': 0.1, 'lr': <function atari.<locals>.<lambda> at 0x2b00d20f4c80>, 'cliprange': <function atari.<locals>.<lambda> at 0x2b00eda26510>, 'decay': 0, 'network': 'cnn'}
+Number of updates is :  976
+0.3
+0.1
+Update number :  1
+--------------------------------------
+| approxkl           | 0.0013793784  |
+| clipfrac           | 0.031274416   |
+| eplenmean          | nan           |
+| eprewmean          | nan           |
+| explained_variance | -5.67e-05     |
+| fps                | 607           |
+| nupdates           | 1             |
+| policy_entropy     | 1.7902668     |
+| policy_loss        | -0.0009338986 |
+| serial_timesteps   | 128           |
+| time_elapsed       | 16.9          |
+| total_timesteps    | 10240         |
+| value_loss         | 0.264941      |
+--------------------------------------
+0.3
+0.1
+Update number :  2
+---------------------------------------
+| approxkl           | 0.0004916279   |
+| clipfrac           | 0.0            |
+| eplenmean          | nan            |
+| eprewmean          | nan            |
+| explained_variance | 0.00189        |
+| fps                | 604            |
+| nupdates           | 2              |
+| policy_entropy     | 1.7906643      |
+| policy_loss        | -0.00036186393 |
+| serial_timesteps   | 256            |
+| time_elapsed       | 33.8           |
+| total_timesteps    | 20480          |
+| value_loss         | 0.08455281     |
+---------------------------------------
+0.3
+0.1
+Update number :  3
+--------------------------------------
+| approxkl           | 0.00058205024 |
+| clipfrac           | 0.030322265   |
+| eplenmean          | nan           |
+| eprewmean          | nan           |
+| explained_variance | 0.00245       |
+| fps                | 598           |
+| nupdates           | 3             |
+| policy_entropy     | 1.7875142     |
+| policy_loss        | -0.0005394831 |
+| serial_timesteps   | 384           |
+| time_elapsed       | 50.9          |
+| total_timesteps    | 30720         |
+| value_loss         | 0.08089044    |
+--------------------------------------
+0.3
+0.1
+Update number :  4
+--------------------------------------
+| approxkl           | 0.0003001948  |
+| clipfrac           | 0.0           |
+| eplenmean          | nan           |
+| eprewmean          | nan           |
+| explained_variance | 0.00152       |
+| fps                | 627           |
+| nupdates           | 4             |
+| policy_entropy     | 1.7870467     |
+| policy_loss        | -9.005533e-06 |
+| serial_timesteps   | 512           |
+| time_elapsed       | 67.2          |
+| total_timesteps    | 40960         |
+| value_loss         | 0.07907848    |
+--------------------------------------
+0.3
+0.1
+Update number :  5
+--------------------------------------
+| approxkl           | 0.00018164466 |
+| clipfrac           | 0.0           |
+| eplenmean          | nan           |
+| eprewmean          | nan           |
+| explained_variance | 0.00386       |
+| fps                | 606           |
+| nupdates           | 5             |
+| policy_entropy     | 1.7861708     |
+| policy_loss        | -0.0001365761 |
+| serial_timesteps   | 640           |
+| time_elapsed       | 84.1          |
+| total_timesteps    | 51200         |
+| value_loss         | 0.07562998    |
+--------------------------------------
+0.3
+0.1
+Update number :  6
+---------------------------------------
+| approxkl           | 0.00019625592  |
+| clipfrac           | 0.0            |
+| eplenmean          | 760            |
+| eprewmean          | -21            |
+| explained_variance | 0.000647       |
+| fps                | 627            |
+| nupdates           | 6              |
+| policy_entropy     | 1.78651        |
+| policy_loss        | -0.00019974803 |
+| serial_timesteps   | 768            |
+| time_elapsed       | 100            |
+| total_timesteps    | 61440          |
+| value_loss         | 0.07539525     |
+---------------------------------------
+0.3
+0.1
+Update number :  7
+--------------------------------------
+| approxkl           | 0.00018864867 |
+| clipfrac           | 0.0           |
+| eplenmean          | 843           |
+| eprewmean          | -20.7         |
+| explained_variance | 0.0137        |
+| fps                | 561           |
+| nupdates           | 7             |
+| policy_entropy     | 1.7835497     |
+| policy_loss        | -3.166248e-05 |
+| serial_timesteps   | 896           |
+| time_elapsed       | 119           |
+| total_timesteps    | 71680         |
+| value_loss         | 0.059689637   |
+--------------------------------------
+0.3
+0.1
+Update number :  8
+---------------------------------------
+| approxkl           | 0.00024415675  |
+| clipfrac           | 0.0            |
+| eplenmean          | 893            |
+| eprewmean          | -20.4          |
+| explained_variance | 0.012          |
+| fps                | 587            |
+| nupdates           | 8              |
+| policy_entropy     | 1.7813973      |
+| policy_loss        | -0.00023046558 |
+| serial_timesteps   | 1024           |
+| time_elapsed       | 136            |
+| total_timesteps    | 81920          |
+| value_loss         | 0.05424192     |
+---------------------------------------
+0.3
+0.1
+Update number :  9
+--------------------------------------
+| approxkl           | 0.0009642635  |
+| clipfrac           | 0.026391601   |
+| eplenmean          | 925           |
+| eprewmean          | -20.3         |
+| explained_variance | 0.00952       |
+| fps                | 591           |
+| nupdates           | 9             |
+| policy_entropy     | 1.7748897     |
+| policy_loss        | -0.0008579118 |
+| serial_timesteps   | 1152          |
+| time_elapsed       | 153           |
+| total_timesteps    | 92160         |
+| value_loss         | 0.059169933   |
+--------------------------------------
+0.3
+0.1
+Update number :  10
+--------------------------------------
+| approxkl           | 0.0005498512  |
+| clipfrac           | 0.029760743   |
+| eplenmean          | 935           |
+| eprewmean          | -20.2         |
+| explained_variance | 0.00578       |
+| fps                | 631           |
+| nupdates           | 10            |
+| policy_entropy     | 1.7756969     |
+| policy_loss        | -0.0005111435 |
+| serial_timesteps   | 1280          |
+| time_elapsed       | 170           |
+| total_timesteps    | 102400        |
+| value_loss         | 0.06149677    |
+--------------------------------------
+0.3
+0.1
+Update number :  11
+--------------------------------------
+| approxkl           | 0.00035052584 |
+| clipfrac           | 0.0           |
+| eplenmean          | 935           |
+| eprewmean          | -20.2         |
+| explained_variance | 0.00904       |
+| fps                | 612           |
+| nupdates           | 11            |
+| policy_entropy     | 1.7802936     |
+| policy_loss        | -0.0002112863 |
+| serial_timesteps   | 1408          |
+| time_elapsed       | 186           |
+| total_timesteps    | 112640        |
+| value_loss         | 0.06570946    |
+--------------------------------------
+0.3
+0.1
+Update number :  12
+---------------------------------------
+| approxkl           | 0.00034895132  |
+| clipfrac           | 0.0            |
+| eplenmean          | 935            |
+| eprewmean          | -20.2          |
+| explained_variance | 0.0134         |
+| fps                | 638            |
+| nupdates           | 12             |
+| policy_entropy     | 1.7833018      |
+| policy_loss        | -0.00044654423 |
+| serial_timesteps   | 1536           |
+| time_elapsed       | 202            |
+| total_timesteps    | 122880         |
+| value_loss         | 0.06389576     |
+---------------------------------------
+0.3
+0.1
+Update number :  13
+-------------------------------------
+| approxkl           | 0.0008434221 |
+| clipfrac           | 0.024291992  |
+| eplenmean          | 929          |
+| eprewmean          | -20.3        |
+| explained_variance | 0.0238       |
+| fps                | 604          |
+| nupdates           | 13           |
+| policy_entropy     | 1.7815723    |
+| policy_loss        | -0.000993066 |
+| serial_timesteps   | 1664         |
+| time_elapsed       | 219          |
+| total_timesteps    | 133120       |
+| value_loss         | 0.060808774  |
+-------------------------------------
+0.3
+0.1
+Update number :  14
+---------------------------------------
+| approxkl           | 0.00018902106  |
+| clipfrac           | 0.0            |
+| eplenmean          | 927            |
+| eprewmean          | -20.3          |
+| explained_variance | 0.0276         |
+| fps                | 607            |
+| nupdates           | 14             |
+| policy_entropy     | 1.7801075      |
+| policy_loss        | -0.00030912788 |
+| serial_timesteps   | 1792           |
+| time_elapsed       | 236            |
+| total_timesteps    | 143360         |
+| value_loss         | 0.058011226    |
+---------------------------------------
+0.3
+0.1
+Update number :  15
+--------------------------------------
+| approxkl           | 0.00038969674 |
+| clipfrac           | 0.0           |
+| eplenmean          | 950           |
+| eprewmean          | -20.2         |
+| explained_variance | 0.0331        |
+| fps                | 569           |
+| nupdates           | 15            |
+| policy_entropy     | 1.7795279     |
+| policy_loss        | -0.0003523311 |
+| serial_timesteps   | 1920          |
+| time_elapsed       | 254           |
+| total_timesteps    | 153600        |
+| value_loss         | 0.054097496   |
+--------------------------------------
+0.3
+0.1
+Update number :  16
+---------------------------------------
+| approxkl           | 0.00036062137  |
+| clipfrac           | 0.0069091795   |
+| eplenmean          | 964            |
+| eprewmean          | -20.2          |
+| explained_variance | 0.0252         |
+| fps                | 605            |
+| nupdates           | 16             |
+| policy_entropy     | 1.7790527      |
+| policy_loss        | -0.00018591319 |
+| serial_timesteps   | 2048           |
+| time_elapsed       | 271            |
+| total_timesteps    | 163840         |
+| value_loss         | 0.053249367    |
+---------------------------------------
+0.3
+0.1
+Update number :  17
+--------------------------------------
+| approxkl           | 6.0121965e-05 |
+| clipfrac           | 0.0           |
+| eplenmean          | 970           |
+| eprewmean          | -20.1         |
+| explained_variance | 0.0276        |
+| fps                | 598           |
+| nupdates           | 17            |
+| policy_entropy     | 1.7814872     |
+| policy_loss        | -7.867199e-05 |
+| serial_timesteps   | 2176          |
+| time_elapsed       | 288           |
+| total_timesteps    | 174080        |
+| value_loss         | 0.06058592    |
+--------------------------------------
+slurmstepd: error: *** JOB 398643 ON nia0921 CANCELLED AT 2018-09-12T14:37:32 ***
+
+scontrol show jobid 398643
+JobId=398643 JobName=mpi_ex
+   UserId=pthodo(3039931) GroupId=dprecup(6002510) MCS_label=N/A
+   Priority=1734606 Nice=0 Account=def-dprecup QOS=normal
+   JobState=COMPLETING Reason=None Dependency=(null)
+   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:15
+   RunTime=00:05:24 TimeLimit=06:00:00 TimeMin=N/A
+   SubmitTime=2018-09-12T14:30:20 EligibleTime=2018-09-12T14:30:20
+   StartTime=2018-09-12T14:32:08 EndTime=2018-09-12T14:37:32 Deadline=N/A
+   PreemptTime=None SuspendTime=None SecsPreSuspend=0
+   LastSchedEval=2018-09-12T14:32:08
+   Partition=compute AllocNode:Sid=nia-login07:132667
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=nia0921
+   BatchHost=nia0921
+   NumNodes=1 NumCPUs=80 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=80,node=1,billing=40
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   Gres=(null) Reservation=(null)
+   OverSubscribe=NO Contiguous=0 Licenses=(null) Network=(null)
+   Command=/gpfs/fs0/scratch/d/dprecup/pthodo/utils/run_game.sh 11
+   WorkDir=/gpfs/fs0/scratch/d/dprecup/pthodo/utils
+   StdErr=/gpfs/fs0/scratch/d/dprecup/pthodo/utils/./output_dir/mpi_ex_398643.txt
+   StdIn=/dev/null
+   StdOut=/gpfs/fs0/scratch/d/dprecup/pthodo/utils/./output_dir/mpi_ex_398643.txt
+   Power=
+
+sacct -j 398643
+       JobID    JobName    Account    Elapsed  MaxVMSize     MaxRSS  SystemCPU    UserCPU ExitCode 
+------------ ---------- ---------- ---------- ---------- ---------- ---------- ---------- -------- 
+398643           mpi_ex def-dprec+   00:05:24                        22:44.228   01:32:03      0:0 
+398643.batch      batch def-dprec+   00:05:25 303558568K  19596016K  22:44.228   01:32:03     0:15 
