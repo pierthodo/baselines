@@ -279,12 +279,12 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
         runner.beta /= 1+decay*update
         print(beta)
         print(theta)
-        print(lrnow)
         print("Update number : ",update)
         assert nbatch % nminibatches == 0
         tstart = time.time()
         frac = 1.0 - (update - 1.0) / nupdates
         lrnow = lr(frac)
+        print(lrnow)
         cliprangenow = cliprange(frac)
         obs, returns, masks, actions, values, neglogpacs, states, epinfos = runner.run() #pylint: disable=E0632
         epinfobuf.extend(epinfos)
