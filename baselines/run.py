@@ -51,7 +51,7 @@ def train(args, extra_args):
     learn = get_learn_function(args.alg)
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
-
+    alg_kwargs['lr'] = lambda f: extra_args['lr'] * f
     env = build_env(args)
 
     if args.network:
@@ -205,7 +205,7 @@ def main():
     extra_args = {k: parse(v) for k, v in parse_unknown_args(unknown_args).items()}
     
 
-    LOG_DIR = args.path+str(args.identifier)+"beta_" +str(extra_args['beta'])+"_theta_"+ str(extra_args['theta']) + "_decay_" + str(extra_args['decay']) + "/" + str(args.env) + "/" + str(args.seed) + "/"
+    LOG_DIR = args.path+"lr_"+str(extra_args['lr'])+str(args.identifier)+"_beta_" +str(extra_args['beta'])+"_theta_"+ str(extra_args['theta']) + "_decay_" + str(extra_args['decay']) + "/" + str(args.env) + "/" + str(args.seed) + "/"
 
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0

@@ -279,6 +279,7 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
         runner.beta /= 1+decay*update
         print(beta)
         print(theta)
+        print(lrnow)
         print("Update number : ",update)
         assert nbatch % nminibatches == 0
         tstart = time.time()
