@@ -123,6 +123,7 @@ def parse_unknown_args(args):
     Parse arguments not consumed by arg parser into a dicitonary
     """
     retval = {}
+    print("AAAAA",args)
     for arg in args:
         assert arg.startswith('--')
         assert '=' in arg, 'cannot parse arg {}'.format(arg)

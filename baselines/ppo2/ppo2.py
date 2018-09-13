@@ -91,12 +91,13 @@ class Model(object):
 
 class Runner(AbstractEnvRunner):
 
-    def __init__(self, *, env, model, nsteps, gamma, lam,beta,theta):
+    def __init__(self, *, env, model, nsteps, gamma, lam,beta,theta,noise_reward):
         super().__init__(env=env, model=model, nsteps=nsteps)
         self.lam = lam
         self.gamma = gamma
         self.beta = beta
         self.theta = theta
+        self.noise_reward = noise_reward
 
     def run(self):
         mb_obs, mb_rewards, mb_actions, mb_values, mb_dones, mb_neglogpacs = [],[],[],[],[],[]
@@ -168,7 +169,7 @@ class Runner(AbstractEnvRunner):
                 nextnonterminal = 1.0 - mb_dones[t+1]
                 nextvalues = (1-self.beta)*mb_values[t+1] + self.beta*prev[t-1] # USE THE REG VALUE INSTEAD OF mb_values[t+1]
 
-            delta = mb_rewards[t] + self.gamma * nextvalues * nextnonterminal - mb_values[t]
+            delta = np.random.normal(loc=mb_rewards[t],scale=self.noise_reward,size=1) + self.gamma * nextvalues * nextnonterminal - mb_values[t]
             mb_advs[t] = lastgaelam = delta + self.gamma * self.lam * nextnonterminal * lastgaelam
         mb_returns = mb_advs + mb_values
         return (*map(sf01, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs)),
@@ -189,7 +190,7 @@ def constfn(val):
 def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0, lr=3e-4,
             vf_coef=0.5,  max_grad_norm=0.5, gamma=0.99, lam=0.95,
             log_interval=10, nminibatches=4, noptepochs=4, cliprange=0.2,
-            save_interval=0, load_path=None,decay=0,beta=0,theta=0, **network_kwargs):
+            save_interval=0, load_path=None,decay=0,beta=0,theta=0,noise_reward=0, **network_kwargs):
     '''
     Learn policy using PPO algorithm (https://arxiv.org/abs/1707.06347)
     
@@ -267,7 +268,7 @@ def learn(*, network, env, total_timesteps, seed=None, nsteps=2048, ent_coef=0.0
     model = make_model()
     if load_path is not None:
         model.load(load_path)
-    runner = Runner(env=env, model=model, nsteps=nsteps, gamma=gamma, lam=lam,beta=beta,theta=theta)
+    runner = Runner(env=env, model=model, nsteps=nsteps, gamma=gamma, lam=lam,beta=beta,theta=theta,noise_reward=noise_reward)
 
     epinfobuf = deque(maxlen=100)
     tfirststart = time.time()
