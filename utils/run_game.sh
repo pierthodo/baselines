@@ -9,6 +9,7 @@ conda activate env_mujoco
 module load intel/2018.2
 module load openmpi/3.1.0
 cd baselines
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/d/dprecup/pthodo/.mujoco/mjpro150/bin
 while read -r s
 do
 	echo $s
