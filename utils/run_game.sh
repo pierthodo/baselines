@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --time=1:30:00
+#SBATCH --time=0:59:00
 #SBATCH --job-name mpi_ex
 #SBATCH --output=./output_dir/mpi_ex_%j.txt
 
@@ -16,7 +16,7 @@ do
 	while read game
 	do
 		echo $game
-		python -m baselines.run --alg=ppo2  --noise_reward=$5 --env=$game --decay=$3 --theta=$2 --lr=$4 --beta=$1 --seed=$s --network=mlp --num_timesteps=1e7 --identifier benchmark_var_9/ --path /scratch/d/dprecup/pthodo/LOG_DIR/ &
+		python -m baselines.run --alg=ppo2  --noise_reward=$5 --env=$game --decay=$3 --theta=$2 --lr=$4 --beta=$1 --seed=$s --network=mlp --num_timesteps=2e7 --identifier benchmark_var_10/ --path /scratch/d/dprecup/pthodo/LOG_DIR/ &
 	done < "utils/mujoco/game_mujoco.txt"
 done < "utils/seeds.txt"
 wait

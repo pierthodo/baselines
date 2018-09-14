@@ -169,7 +169,7 @@ class Runner(AbstractEnvRunner):
                 nextnonterminal = 1.0 - mb_dones[t+1]
                 nextvalues = (1-self.beta)*mb_values[t+1] + self.beta*prev[t-1] # USE THE REG VALUE INSTEAD OF mb_values[t+1]
 
-            delta = np.random.normal(loc=mb_rewards[t],scale=self.noise_reward,size=1) + self.gamma * nextvalues * nextnonterminal - mb_values[t]
+            delta = np.random.normal(loc=mb_rewards[t],scale=self.noise_reward,size=mb_rewards[t].shape) + self.gamma * nextvalues * nextnonterminal - mb_values[t]
             mb_advs[t] = lastgaelam = delta + self.gamma * self.lam * nextnonterminal * lastgaelam
         mb_returns = mb_advs + mb_values
         return (*map(sf01, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs)),
