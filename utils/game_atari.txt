@@ -1,0 +1,7 @@
+BeamRiderNoFrameskip-v4
+BreakoutNoFrameskip-v4
+EnduroNoFrameskip-v4
+PongNoFrameskip-v4
+SeaquestNoFrameskip-v4
+SpaceInvadersNoFrameskip-v4
+QbertNoFrameskip-v4
