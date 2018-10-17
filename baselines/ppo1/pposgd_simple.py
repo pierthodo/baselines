@@ -1,22 +1,15 @@
 import tensorflow
-print("a")
 from baselines.common import Dataset, explained_variance, fmt_row, zipsame
-print("b")
 from baselines import logger
-print('c')
 import baselines.common.tf_util as U
-print("d")
 import tensorflow as tf, numpy as np
-print("e")
 import time
+from comet_ml import Experiment
+
 from baselines.common.mpi_adam import MpiAdam
-print("f")
 from baselines.common.mpi_moments import mpi_moments
-print("g")
 from mpi4py import MPI
-print("h")
 from collections import deque
-print("f")
 def traj_segment_generator(pi, env, horizon, stochastic):
     t = 0
     ac = env.action_space.sample() # not used, just so we have the datatype
@@ -109,7 +102,6 @@ def learn(env, policy_fn, *,
         ):
     # Setup losses and stuff
     # ----------------------------------------
-    print("wettt")
     ob_space = env.observation_space
     ac_space = env.action_space
     pi = policy_fn("pi", ob_space, ac_space) # Construct network for new policy

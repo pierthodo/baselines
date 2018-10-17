@@ -9,9 +9,7 @@ from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines.common.cmd_util import atari_arg_parser
 
 def train(env_id, num_timesteps, seed,beta,theta,decay):
-    print("n")
     from baselines.ppo1 import pposgd_simple, cnn_policy
-    print("e")
     import baselines.common.tf_util as U
     rank = MPI.COMM_WORLD.Get_rank()
     sess = U.single_threaded_session()
@@ -22,9 +20,8 @@ def train(env_id, num_timesteps, seed,beta,theta,decay):
         logger.configure(format_strs=[])
     workerseed = seed + 10000 * MPI.COMM_WORLD.Get_rank() if seed is not None else None
     set_global_seeds(workerseed)
-    print("f")
+    print(env_id)
     env = make_atari(env_id)
-    print("g")
     def policy_fn(name, ob_space, ac_space): #pylint: disable=W0613
         return cnn_policy.CnnPolicy(name=name, ob_space=ob_space, ac_space=ac_space)
     env = bench.Monitor(env, logger.get_dir() and
