@@ -42,7 +42,6 @@ def train(env_id, num_timesteps, seed,beta,theta,decay):
 
 def main():
     args = atari_arg_parser().parse_args()
-    print("Wee")
     train(args.env, num_timesteps=args.num_timesteps, seed=args.seed,beta=args.beta,theta=args.theta,decay=args.decay)
 
 if __name__ == '__main__':
