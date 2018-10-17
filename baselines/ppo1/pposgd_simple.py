@@ -1,12 +1,20 @@
 import tensorflow
+print("a")
 from baselines.common import Dataset, explained_variance, fmt_row, zipsame
+print("b")
 from baselines import logger
+print('c')
 import baselines.common.tf_util as U
+print("d")
 import tensorflow as tf, numpy as np
+print("e")
 import time
 from baselines.common.mpi_adam import MpiAdam
+print("f")
 from baselines.common.mpi_moments import mpi_moments
+print("g")
 from mpi4py import MPI
+print("h")
 from collections import deque
 
 def traj_segment_generator(pi, env, horizon, stochastic):
@@ -101,7 +109,6 @@ def learn(env, policy_fn, *,
         ):
     # Setup losses and stuff
     # ----------------------------------------
-    print("Wee")
     ob_space = env.observation_space
     ac_space = env.action_space
     pi = policy_fn("pi", ob_space, ac_space) # Construct network for new policy
