@@ -1,3 +1,4 @@
+import tensorflow
 from baselines.common import Dataset, explained_variance, fmt_row, zipsame
 from baselines import logger
 import baselines.common.tf_util as U
