@@ -151,7 +151,7 @@ def learn(env, policy_fn, *,
     rewbuffer = deque(maxlen=100) # rolling buffer for episode rewards
     experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
                             project_name="atari", workspace="pierthodo",disabled=disable_log)
-    experiment.log_multiple_params({"beta":beta,"theta":theta,"decay",decay})
+    experiment.log_multiple_params({"beta":beta,"theta":theta,"decay":decay})
 
 
     assert sum([max_iters>0, max_timesteps>0, max_episodes>0, max_seconds>0])==1, "Only one time constraint permitted"
