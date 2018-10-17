@@ -149,6 +149,7 @@ def learn(env, policy_fn, *,
     timesteps_so_far = 0
     iters_so_far = 0
     tstart = time.time()
+    disable_log = False
     lenbuffer = deque(maxlen=100) # rolling buffer for episode lengths
     rewbuffer = deque(maxlen=100) # rolling buffer for episode rewards
     experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
