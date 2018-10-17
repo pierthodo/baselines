@@ -8,7 +8,7 @@ from baselines import logger
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines.common.cmd_util import atari_arg_parser
 
-def train(env_id, num_timesteps, seed):
+def train(env_id, num_timesteps, seed,beta,theta,decay):
     from baselines.ppo1 import pposgd_simple, cnn_policy
     import baselines.common.tf_util as U
     rank = MPI.COMM_WORLD.Get_rank()
@@ -36,13 +36,13 @@ def train(env_id, num_timesteps, seed):
         clip_param=0.2, entcoeff=0.01,
         optim_epochs=4, optim_stepsize=1e-3, optim_batchsize=64,
         gamma=0.99, lam=0.95,
-        schedule='linear'
+        schedule='linear',beta=beta,theta=theta,decay=decay,
     )
     env.close()
 
 def main():
     args = atari_arg_parser().parse_args()
-    train(args.env, num_timesteps=args.num_timesteps, seed=args.seed)
+    train(args.env, num_timesteps=args.num_timesteps, seed=args.seed,beta=args.beta,theta=args.theta,decay=args.decay)
 
 if __name__ == '__main__':
     main()

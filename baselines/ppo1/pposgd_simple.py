@@ -61,21 +61,32 @@ def traj_segment_generator(pi, env, horizon, stochastic):
             ob = env.reset()
         t += 1
 
-def add_vtarg_and_adv(seg, gamma, lam):
-    """
-    Compute target value using TD(lambda) estimator, and advantage with GAE(lambda)
-    """
-    new = np.append(seg["new"], 0) # last element is only used for last vtarg, but we already zeroed it if last new = 1
+def add_vtarg_and_adv(seg, gamma, lam,theta,beta):
+
+    new = np.append(seg["new"], 0) # last element is only used for last vtarg, but we already zeroed it $
     vpred = np.append(seg["vpred"], seg["nextvpred"])
     T = len(seg["rew"])
     seg["adv"] = gaelam = np.empty(T, 'float32')
     rew = seg["rew"]
     lastgaelam = 0
-    for t in reversed(range(T)):
+
+    prev = np.zeros(T,'float32')
+    td_err = np.zeros(T,'float32')
+    for t in range(T):
         nonterminal = 1-new[t+1]
-        delta = rew[t] + gamma * vpred[t+1] * nonterminal - vpred[t]
+        if t == 0:
+            td_err[t] =  gamma* vpred[t+1]*nonterminal - vpred[t]
+            prev[t] = vpred[t]
+        else:
+            td_err[t] = gamma*nonterminal*(theta*prev[t-1] +(1-theta)*vpred[t+1]) - vpred[t]
+            prev[t] = beta*prev[t-1] + (1-beta)*vpred[t]
+            #prev[t] = vpred[t]
+
+    for t in reversed(range(T)):
+        delta = rew[t] + td_err[t]
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
     seg["tdlamret"] = seg["adv"] + seg["vpred"]
+
 
 def learn(env, policy_fn, *,
         timesteps_per_actorbatch, # timesteps per actor per update
@@ -84,7 +95,7 @@ def learn(env, policy_fn, *,
         gamma, lam, # advantage estimation
         max_timesteps=0, max_episodes=0, max_iters=0, max_seconds=0,  # time constraint
         callback=None, # you can do anything in the callback, since it takes locals(), globals()
-        adam_epsilon=1e-5,
+        adam_epsilon=1e-5,theta=0,beta=0,decay=0,
         schedule='constant' # annealing for stepsize parameters (epsilon and adam)
         ):
     # Setup losses and stuff
@@ -138,10 +149,15 @@ def learn(env, policy_fn, *,
     tstart = time.time()
     lenbuffer = deque(maxlen=100) # rolling buffer for episode lengths
     rewbuffer = deque(maxlen=100) # rolling buffer for episode rewards
+    experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
+                            project_name="atari", workspace="pierthodo",disabled=disable_log)
+    experiment.log_multiple_params({"beta":beta,"theta":theta,"decay",decay})
+
 
     assert sum([max_iters>0, max_timesteps>0, max_episodes>0, max_seconds>0])==1, "Only one time constraint permitted"
 
     while True:
+        theta /= 1+decay*iters_so_far
         if callback: callback(locals(), globals())
         if max_timesteps and timesteps_so_far >= max_timesteps:
             break
@@ -162,7 +178,7 @@ def learn(env, policy_fn, *,
         logger.log("********** Iteration %i ************"%iters_so_far)
 
         seg = seg_gen.__next__()
-        add_vtarg_and_adv(seg, gamma, lam)
+        add_vtarg_and_adv(seg, gamma, lam,theta,beta)
 
         # ob, ac, atarg, ret, td1ret = map(np.concatenate, (obs, acs, atargs, rets, td1rets))
         ob, ac, atarg, tdlamret = seg["ob"], seg["ac"], seg["adv"], seg["tdlamret"]
@@ -209,6 +225,10 @@ def learn(env, policy_fn, *,
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
+        experiment.log_multiple_metrics({"eprewmean": np.mean(rewbuffer),
+                                        "beta":beta,
+                                        "theta":theta
+                                },steps=update*(total_timesteps//nbatch))
         if MPI.COMM_WORLD.Get_rank()==0:
             logger.dump_tabular()
 
