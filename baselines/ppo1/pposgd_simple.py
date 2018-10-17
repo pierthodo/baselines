@@ -1,4 +1,4 @@
-from comet_ml import Experiment
+#from comet_ml import Experiment
 
 import tensorflow
 from baselines.common import Dataset, explained_variance, fmt_row, zipsame
@@ -153,9 +153,9 @@ def learn(env, policy_fn, *,
     disable_log = False
     lenbuffer = deque(maxlen=100) # rolling buffer for episode lengths
     rewbuffer = deque(maxlen=100) # rolling buffer for episode rewards
-    experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
-                            project_name="atari", workspace="pierthodo",disabled=disable_log)
-    experiment.log_multiple_params({"beta":beta,"theta":theta,"decay":decay})
+    #experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
+    #                        project_name="atari", workspace="pierthodo",disabled=disable_log)
+    #experiment.log_multiple_params({"beta":beta,"theta":theta,"decay":decay})
 
 
     assert sum([max_iters>0, max_timesteps>0, max_episodes>0, max_seconds>0])==1, "Only one time constraint permitted"
@@ -229,10 +229,10 @@ def learn(env, policy_fn, *,
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
-        experiment.log_multiple_metrics({"eprewmean": np.mean(rewbuffer),
-                                        "beta":beta,
-                                        "theta":theta
-                                },steps=update*(total_timesteps//nbatch))
+        #experiment.log_multiple_metrics({"eprewmean": np.mean(rewbuffer),
+        #                                "beta":beta,
+        #                                "theta":theta
+        #                        },steps=update*(total_timesteps//nbatch))
         if MPI.COMM_WORLD.Get_rank()==0:
             logger.dump_tabular()
 
