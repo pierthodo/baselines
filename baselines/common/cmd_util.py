@@ -101,6 +101,7 @@ def common_arg_parser():
     parser.add_argument('--theta',type=float,default=0)
     parser.add_argument('--beta',type=float,default=0)
     parser.add_argument('--decay',type=float,default=0)
+    parser.add_argument('--name',type=str,default="")
     parser.add_argument('--gamestate', help='game state to load (so far only used in retro games)', default=None)
     parser.add_argument('--num_env', help='Number of environment copies being run in parallel. When not specified, set to number of cpus for Atari, and to 1 for Mujoco', default=None, type=int)
     parser.add_argument('--reward_scale', help='Reward scale factor. Default: 1.0', default=1.0, type=float)

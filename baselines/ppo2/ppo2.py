@@ -322,9 +322,9 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
     if eval_env is not None:
         eval_runner = Runner(env = eval_env, model = model, nsteps = nsteps, gamma = gamma, lam= lam)
     disable_log = False
-    experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
-                            project_name="atari", workspace="pierthodo",disabled=disable_log)
-    experiment.log_multiple_params({"beta":beta,"theta":theta,"decay",decay})
+    #experiment = Experiment(api_key="HFFoR5WtTjoHuBGq6lYaZhG0c",
+    #                        project_name="atari", workspace="pierthodo",disabled=disable_log)
+    #experiment.log_multiple_params({"beta":beta,"theta":theta,"decay",decay})
 
 
 
@@ -410,11 +410,11 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
                 logger.logkv('eval_eplenmean', safemean([epinfo['l'] for epinfo in eval_epinfobuf]) )
             logger.logkv('time_elapsed', tnow - tfirststart)
             print(runner.beta)
-            experiment.log_multiple_metrics({"eprewmean": safemean([epinfo['r'] for epinfo in epinfobuf]),
-                                            "explained_variance": float(ev),
-                                            "beta":runner.beta,
-                                            "theta":runner.theta
-                                    },steps=update*(total_timesteps//nbatch))
+            #experiment.log_multiple_metrics({"eprewmean": safemean([epinfo['r'] for epinfo in epinfobuf]),
+            #                                "explained_variance": float(ev),
+            #                                "beta":runner.beta,
+            #                                "theta":runner.theta
+            #                        },steps=update*(total_timesteps//nbatch))
             for (lossval, lossname) in zip(lossvals, model.loss_names):
                 logger.logkv(lossname, lossval)
             if MPI.COMM_WORLD.Get_rank() == 0:
