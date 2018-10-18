@@ -205,7 +205,7 @@ def main():
 
     import os.path
     import datetime
-    name = "v2/"args.name+"theta-"+str(args.theta)+"-decay-"+str(args.decay) + "-timeparam-" + str(args.beta) + '/'
+    name = "v2/"+args.name+"theta-"+str(args.theta)+"-decay-"+str(args.decay) + "-timeparam-" + str(args.beta) + '/'
     tmp = os.path.join('/home/pthodo/project/pthodo/LOG/'+name+'atari_'+str(args.env)+'/',
                        str(args.seed) + '--' + datetime.datetime.now().strftime("openai-%Y-%m-%d-%H-%M-%S-%f"))
     print(tmp)
