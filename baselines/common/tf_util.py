@@ -293,7 +293,7 @@ def display_var_info(vars):
         if "/Adam" in name or "beta1_power" in name or "beta2_power" in name: continue
         v_params = np.prod(v.shape.as_list())
         count_params += v_params
-        if "/b:" in name or "/biases" in name: continue    # Wx+b, bias is not interesting to look at => count params, but not print
+        if "/b:" in name or "/bias" in name: continue    # Wx+b, bias is not interesting to look at => count params, but not print
         logger.info("   %s%s %i params %s" % (name, " "*(55-len(name)), v_params, str(v.shape)))
 
     logger.info("Total model parameters: %0.2f million" % (count_params*1e-6))
@@ -322,7 +322,9 @@ def save_state(fname, sess=None):
     from baselines import logger
     logger.warn('save_state method is deprecated, please use save_variables instead')
     sess = sess or get_session()
-    os.makedirs(os.path.dirname(fname), exist_ok=True)
+    dirname = os.path.dirname(fname)
+    if any(dirname):
+        os.makedirs(dirname, exist_ok=True)
     saver = tf.train.Saver()
     saver.save(tf.get_default_session(), fname)
 
@@ -335,7 +337,9 @@ def save_variables(save_path, variables=None, sess=None):
 
     ps = sess.run(variables)
     save_dict = {v.name: value for v, value in zip(variables, ps)}
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    dirname = os.path.dirname(save_path)
+    if any(dirname):
+        os.makedirs(dirname, exist_ok=True)
     joblib.dump(save_dict, save_path)
 
 def load_variables(load_path, variables=None, sess=None):
@@ -343,7 +347,7 @@ def load_variables(load_path, variables=None, sess=None):
     variables = variables or tf.trainable_variables()
 
     loaded_params = joblib.load(os.path.expanduser(load_path))
-    restores = []   
+    restores = []
     if isinstance(loaded_params, list):
         assert len(loaded_params) == len(variables), 'number of variables loaded mismatches len(variables)'
         for d, v in zip(loaded_params, variables):

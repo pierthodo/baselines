@@ -19,7 +19,6 @@ from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 from baselines.common.retro_wrappers import RewardScaler
 
 
-
 def make_vec_env(env_id, env_type, num_env, seed, wrapper_kwargs=None, start_index=0, reward_scale=1.0):
     """
     Create a wrapped, monitored SubprocVecEnv for Atari and MuJoCo.
@@ -30,7 +29,7 @@ def make_vec_env(env_id, env_type, num_env, seed, wrapper_kwargs=None, start_ind
         def _thunk():
             env = make_atari(env_id) if env_type == 'atari' else gym.make(env_id)
             env.seed(seed + 10000*mpi_rank + rank if seed is not None else None)
-            env = Monitor(env, 
+            env = Monitor(env,
                           logger.get_dir() and os.path.join(logger.get_dir(), str(mpi_rank) + '.' + str(rank)),
                           allow_early_resets=True)
 
@@ -99,14 +98,16 @@ def common_arg_parser():
     parser.add_argument('--alg', help='Algorithm', type=str, default='ppo2')
     parser.add_argument('--num_timesteps', type=float, default=1e6),
     parser.add_argument('--network', help='network type (mlp, cnn, lstm, cnn_lstm, conv_only)', default=None)
+    parser.add_argument('--theta',type=float,default=0)
+    parser.add_argument('--beta',type=float,default=0)
+    parser.add_argument('--decay',type=float,default=0)
     parser.add_argument('--gamestate', help='game state to load (so far only used in retro games)', default=None)
     parser.add_argument('--num_env', help='Number of environment copies being run in parallel. When not specified, set to number of cpus for Atari, and to 1 for Mujoco', default=None, type=int)
     parser.add_argument('--reward_scale', help='Reward scale factor. Default: 1.0', default=1.0, type=float)
     parser.add_argument('--save_path', help='Path to save trained model to', default=None, type=str)
-    parser.add_argument('--identifier', type=str, default=""),
     parser.add_argument('--play', default=False, action='store_true')
-    parser.add_argument('--path',type=str,default="/home/pthodo/project/pthodo/LOG_DIR/")
     return parser
+
 def robotics_arg_parser():
     """
     Create an argparse.ArgumentParser for run_mujoco.py.
@@ -123,12 +124,18 @@ def parse_unknown_args(args):
     Parse arguments not consumed by arg parser into a dicitonary
     """
     retval = {}
-    print("AAAAA",args)
+    preceded_by_key = False
     for arg in args:
-        assert arg.startswith('--')
-        assert '=' in arg, 'cannot parse arg {}'.format(arg)
-        key = arg.split('=')[0][2:]
-        value = arg.split('=')[1]
-        retval[key] = value
+        if arg.startswith('--'):
+            if '=' in arg:
+                key = arg.split('=')[0][2:]
+                value = arg.split('=')[1]
+                retval[key] = value
+            else:
+                key = arg[2:]
+                preceded_by_key = True
+        elif preceded_by_key:
+            retval[key] = arg
+            preceded_by_key = False
 
     return retval
